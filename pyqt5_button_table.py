@@ -22,6 +22,8 @@ class Window(QWidget):
         self.table.horizontalHeader().sectionClicked.connect(self.header_click)
         self.table.setAlternatingRowColors(True)
         self.table.setColumnWidth(0, 200)
+        self.table.setColumnWidth(3, 80)
+        self.table.setColumnWidth(4, 80)
         self.table.setStyleSheet("""
                     QTableWidget {
                         alternate-background-color: None;
@@ -69,7 +71,7 @@ class Window(QWidget):
             button2.setAccessibleName(f"{row}")
             button2.clicked.connect(self.btn2_click)
             button2.setFlat(True)
-            button2.setStyleSheet("border: 1px solid yellow;border-radius:5px;font-size:18px")
+            button2.setStyleSheet("border: 1px solid orange;border-radius:5px;font-size:18px")
             button2.setIcon(QIcon('icon/walking.png'))
             button2.setIconSize(QSize(48, 42))
             self.table.setCellWidget(row, 4, button2)
