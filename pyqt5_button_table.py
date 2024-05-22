@@ -52,15 +52,16 @@ class Window(QWidget):
         print(data)
 
     def btn2_click(self, data):
-        b = self.sender()
-        p = b.mapToGlobal(QPoint(0, b.height()-5))
+        btn = self.sender()
+        p = btn.mapToGlobal(QPoint(0, btn.height() - 5))
         menu = QMenu()
-        menu.move(p)
-        action1 = menu.addAction("Option 1")
-        action2 = menu.addAction("Option 2")
-        action3 = menu.addAction("Option 3")
-        r = menu.exec_()
 
+        action1 = menu.addAction("กลับบ้าน")
+        action2 = menu.addAction("ส่งต่อแผนกถัดไป")
+        action3 = menu.addAction("ส่งต่อแผนกอื่น")
+        r = menu.exec(p)
+        if r == action1:
+            print("กลับบ้าน")
 
 
 if __name__ == "__main__":
