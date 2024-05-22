@@ -17,8 +17,9 @@ class Window(QWidget):
 
         # Create a QTableWidget
         self.table = QTableWidget(20, 5)
-        self.table.setHorizontalHeaderLabels(["Name", "Queue","Appoint", "Call", "Action"])
+        self.table.setHorizontalHeaderLabels(["Name", "Queue", "Appoint", "Call", "Action"])
         self.table.cellDoubleClicked.connect(self.cell_db_click)
+        self.table.horizontalHeader().sectionClicked.connect(self.header_click)
         self.table.setAlternatingRowColors(True)
         self.table.setColumnWidth(0, 200)
         self.table.setStyleSheet("""
@@ -32,7 +33,14 @@ class Window(QWidget):
 
         self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
 
-        # Add buttons to each row
+        self.populate_data()
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.table)
+        self.setLayout(layout)
+        self.resize(800, 540)
+
+    def populate_data(self):
         for row in range(self.table.rowCount()):
             widget = QWidget()
             lay = QHBoxLayout()
@@ -66,12 +74,6 @@ class Window(QWidget):
             button2.setIconSize(QSize(48, 42))
             self.table.setCellWidget(row, 4, button2)
 
-        # Create a layout and add the table
-        layout = QVBoxLayout()
-        layout.addWidget(self.table)
-        self.setLayout(layout)
-        self.resize(800, 540)
-
     def btn1_click(self, data):
         btn = self.sender()
         btn.setEnabled(False)
@@ -82,8 +84,8 @@ class Window(QWidget):
     def btn2_click(self, data):
         btn = self.sender()
         hn = btn.accessibleName()
-        row = self.table.currentRow()
-        self.table.selectRow(row)
+        # row = self.table.currentRow()
+        # self.table.selectRow(row)
 
         p = btn.mapToGlobal(QPoint(0, btn.height() - 5))
         menu = QMenu()
@@ -103,6 +105,9 @@ class Window(QWidget):
             return False
         item = self.table.cellWidget(row, column)
         print(item.accessibleName())
+
+    def header_click(self, index):
+        print(index)
 
 
 if __name__ == "__main__":
