@@ -46,14 +46,14 @@ class Window(QWidget):
             button1.setAccessibleName(str(row))
             button1.clicked.connect(partial(self.btn1_click, row))
             button1.setFlat(True)
-            button1.setStyleSheet("border: 1px solid red;border-radius:5px;")
+            button1.setStyleSheet("border: 1px solid red;border-radius:5px;font-size:18px")
             self.table.setCellWidget(row, 2, button1)
 
             button2 = QPushButton("จบคิว")
             button2.setAccessibleName(f"{row}")
             button2.clicked.connect(self.btn2_click)
             button2.setFlat(True)
-            button2.setStyleSheet("border: 1px solid yellow;border-radius:5px;")
+            button2.setStyleSheet("border: 1px solid yellow;border-radius:5px;font-size:18px")
             self.table.setCellWidget(row, 3, button2)
 
         # Create a layout and add the table
@@ -74,9 +74,12 @@ class Window(QWidget):
         hn = btn.accessibleName()
         p = btn.mapToGlobal(QPoint(0, btn.height() - 5))
         menu = QMenu()
+        menu.setStyleSheet("font-size:16px")
 
         action1 = menu.addAction("กลับบ้าน")
+        menu.addSeparator()
         action2 = menu.addAction("ส่งต่อ : ห้องการเงิน")
+        menu.addSeparator()
         action3 = menu.addAction("ส่งต่อ : แผนกอื่น")
         r = menu.exec(p)
         if r == action1:
