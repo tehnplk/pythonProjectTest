@@ -56,7 +56,7 @@ class Window(QWidget):
         layout = QVBoxLayout()
         layout.addWidget(self.table)
         self.setLayout(layout)
-        self.resize(600, 500)
+        self.resize(660, 540)
 
     def btn1_click(self, data):
         btn = self.sender()
