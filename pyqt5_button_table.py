@@ -3,7 +3,8 @@ import sys
 from PyQt5.QtCore import QPoint, QTimer, QSize
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QTableWidget
-, QTableWidgetItem, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QLineEdit, QLabel, QDialog, QMenu)
+, QTableWidgetItem, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QLineEdit, QLabel, QDialog, QMenu,
+                             QAbstractItemView)
 from functools import partial
 from customClass import dbclickButton as dbBtn
 from PyQt5 import Qt
@@ -26,6 +27,10 @@ class Window(QWidget):
                         background-color: white;
                     }
                 """)
+
+        self.table.setStyleSheet("QTableWidget::item:selected { background-color: rgb(204, 232, 255); }")
+
+        self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
 
         # Add buttons to each row
         for row in range(self.table.rowCount()):
@@ -77,6 +82,9 @@ class Window(QWidget):
     def btn2_click(self, data):
         btn = self.sender()
         hn = btn.accessibleName()
+        row = self.table.currentRow()
+        self.table.selectRow(row)
+
         p = btn.mapToGlobal(QPoint(0, btn.height() - 5))
         menu = QMenu()
         menu.setStyleSheet("font-size:18px")
