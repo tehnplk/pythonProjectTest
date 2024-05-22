@@ -1,6 +1,6 @@
 import sys
 
-from PyQt5.QtCore import QPoint
+from PyQt5.QtCore import QPoint ,QTimer
 from PyQt5.QtWidgets import (QApplication, QTableWidget
 , QTableWidgetItem, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QLineEdit, QLabel, QDialog, QMenu)
 from functools import partial
@@ -14,9 +14,18 @@ class Window(QWidget):
         self.setWindowTitle("PyQt5 Table with Buttons")
 
         # Create a QTableWidget
-        self.table = QTableWidget(3, 4)
+        self.table = QTableWidget(20, 4)
         self.table.setHorizontalHeaderLabels(["Name", "Queue", "", "Action"])
         self.table.cellDoubleClicked.connect(self.cell_db_click)
+        self.table.setAlternatingRowColors(True)
+        self.table.setColumnWidth(0,200)
+        self.table.setStyleSheet("""
+                    QTableWidget {
+                        alternate-background-color: skyblue;
+                        background-color: white;
+                    }
+                """)
+
 
         # Add buttons to each row
         for row in range(self.table.rowCount()):
@@ -25,7 +34,8 @@ class Window(QWidget):
             self.table.setRowHeight(row, 60)
 
             text = QLabel(f"ผู้รับบริการรายที่ {row}")
-            text.setStyleSheet("border:none")
+            lime = "lime"
+            text.setStyleSheet(f"border:none;font-size:18px;margin-left:5px")
             text.setAccessibleName(f"HN {row}")
             lay.addWidget(text)
 
@@ -35,7 +45,7 @@ class Window(QWidget):
 
             button1 = QPushButton(f"เรียกคิว")
             button1.setAccessibleName(str(row))
-            button1.clicked.connect(partial(self.clicked, row))
+            button1.clicked.connect(partial(self.btn1_click, row))
             self.table.setCellWidget(row, 2, button1)
 
             button2 = QPushButton("จบคิว")
@@ -49,8 +59,14 @@ class Window(QWidget):
         self.setLayout(layout)
         self.resize(600, 500)
 
-    def clicked(self, data):
+    def btn1_click(self, data):
+        btn = self.sender()
+        btn.setEnabled(False)
         print(data)
+        # Perform time-consuming operation here
+        QTimer.singleShot(2000, lambda: btn.setEnabled(True))
+
+
 
     def btn2_click(self, data):
         btn = self.sender()
