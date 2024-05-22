@@ -1,5 +1,4 @@
 import sys
-
 from PyQt5.QtCore import QPoint, QTimer, QSize
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QTableWidget
@@ -39,7 +38,7 @@ class Window(QWidget):
 
         layout = QVBoxLayout()
         layout.addWidget(self.table)
-        layout.setContentsMargins(10,10,10,10)
+        layout.setContentsMargins(10, 10, 10, 10)
         self.setLayout(layout)
         self.resize(800, 540)
 
@@ -54,7 +53,7 @@ class Window(QWidget):
             text.setStyleSheet(f"border:none;font-size:18px;margin-left:15px")
             text.setAccessibleName(f"HN {row}")
             lay.addWidget(text)
-            #lay.setContentsMargins(100,100,100,100)
+            # lay.setContentsMargins(100,100,100,100)
 
             widget.setLayout(lay)
             widget.setAccessibleName(str(row))
