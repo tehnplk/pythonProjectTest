@@ -39,6 +39,7 @@ class Window(QWidget):
 
         layout = QVBoxLayout()
         layout.addWidget(self.table)
+        layout.setContentsMargins(10,10,10,10)
         self.setLayout(layout)
         self.resize(800, 540)
 
@@ -50,9 +51,10 @@ class Window(QWidget):
 
             text = QLabel(f"ผู้รับบริการรายที่ {row}")
             lime = "lime"
-            text.setStyleSheet(f"border:none;font-size:18px;margin-left:5px")
+            text.setStyleSheet(f"border:none;font-size:18px;margin-left:15px")
             text.setAccessibleName(f"HN {row}")
             lay.addWidget(text)
+            #lay.setContentsMargins(100,100,100,100)
 
             widget.setLayout(lay)
             widget.setAccessibleName(str(row))
