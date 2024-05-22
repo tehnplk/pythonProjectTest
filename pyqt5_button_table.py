@@ -32,7 +32,7 @@ class Window(QWidget):
             widget.setLayout(lay)
             self.table.setCellWidget(row, 0, widget)
 
-            button1 = QPushButton("เรียกคิว")
+            button1 = QPushButton(f"เรียกคิว")
             button1.setAccessibleName(str(row))
             button1.clicked.connect(partial(self.clicked, row))
             self.table.setCellWidget(row, 2, button1)
@@ -57,8 +57,8 @@ class Window(QWidget):
         menu = QMenu()
 
         action1 = menu.addAction("กลับบ้าน")
-        action2 = menu.addAction("ส่งต่อแผนกถัดไป")
-        action3 = menu.addAction("ส่งต่อแผนกอื่น")
+        action2 = menu.addAction("ส่งต่อ : ห้องการเงิน")
+        action3 = menu.addAction("ส่งต่อ : แผนกอื่น")
         r = menu.exec(p)
         if r == action1:
             print("กลับบ้าน")
