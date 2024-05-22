@@ -1,6 +1,6 @@
 import sys
 
-from PyQt5.QtCore import QPoint ,QTimer
+from PyQt5.QtCore import QPoint, QTimer
 from PyQt5.QtWidgets import (QApplication, QTableWidget
 , QTableWidgetItem, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QLineEdit, QLabel, QDialog, QMenu)
 from functools import partial
@@ -18,14 +18,13 @@ class Window(QWidget):
         self.table.setHorizontalHeaderLabels(["Name", "Queue", "", "Action"])
         self.table.cellDoubleClicked.connect(self.cell_db_click)
         self.table.setAlternatingRowColors(True)
-        self.table.setColumnWidth(0,200)
+        self.table.setColumnWidth(0, 200)
         self.table.setStyleSheet("""
                     QTableWidget {
                         alternate-background-color: skyblue;
                         background-color: white;
                     }
                 """)
-
 
         # Add buttons to each row
         for row in range(self.table.rowCount()):
@@ -65,8 +64,6 @@ class Window(QWidget):
         print(data)
         # Perform time-consuming operation here
         QTimer.singleShot(2000, lambda: btn.setEnabled(True))
-
-
 
     def btn2_click(self, data):
         btn = self.sender()
