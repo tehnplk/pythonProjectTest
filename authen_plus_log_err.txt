@@ -1,0 +1,1 @@
+2024-05-17 11:34:10.898333, <class 'AttributeError'> module 'win32api' has no attribute 'GetDefaultPrinter' <traceback object at 0x0000017706A5D3C0>
