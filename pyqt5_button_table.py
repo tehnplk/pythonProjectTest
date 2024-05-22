@@ -39,8 +39,8 @@ class Window(QWidget):
             self.table.setCellWidget(row, 2, button1)
 
             button2 = QPushButton("จบคิว")
-            button2.setAccessibleName(f"HN {row}")
-            button2.clicked.connect(partial(self.btn2_click), row)
+            button2.setAccessibleName(f"{row}")
+            button2.clicked.connect(self.btn2_click)
             self.table.setCellWidget(row, 3, button2)
 
         # Create a layout and add the table
@@ -54,6 +54,7 @@ class Window(QWidget):
 
     def btn2_click(self, data):
         btn = self.sender()
+        hn = btn.accessibleName()
         p = btn.mapToGlobal(QPoint(0, btn.height() - 5))
         menu = QMenu()
 
@@ -62,7 +63,7 @@ class Window(QWidget):
         action3 = menu.addAction("ส่งต่อ : แผนกอื่น")
         r = menu.exec(p)
         if r == action1:
-            print("กลับบ้าน")
+            print(f"{hn} กลับบ้าน")
 
     def cell_db_click(self, row, column):
         if column != 0:
