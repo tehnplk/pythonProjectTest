@@ -1,6 +1,7 @@
 import sys
 
-from PyQt5.QtCore import QPoint, QTimer
+from PyQt5.QtCore import QPoint, QTimer, QSize
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QTableWidget
 , QTableWidgetItem, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QLineEdit, QLabel, QDialog, QMenu)
 from functools import partial
@@ -14,14 +15,14 @@ class Window(QWidget):
         self.setWindowTitle("PyQt5 Table with Buttons")
 
         # Create a QTableWidget
-        self.table = QTableWidget(20, 4)
-        self.table.setHorizontalHeaderLabels(["Name", "Queue", "", "Action"])
+        self.table = QTableWidget(20, 5)
+        self.table.setHorizontalHeaderLabels(["Name", "Queue","Appoint", "Call", "Action"])
         self.table.cellDoubleClicked.connect(self.cell_db_click)
         self.table.setAlternatingRowColors(True)
         self.table.setColumnWidth(0, 200)
         self.table.setStyleSheet("""
                     QTableWidget {
-                        alternate-background-color: skyblue;
+                        alternate-background-color: None;
                         background-color: white;
                     }
                 """)
@@ -42,25 +43,29 @@ class Window(QWidget):
             widget.setAccessibleName(str(row))
             self.table.setCellWidget(row, 0, text)
 
-            button1 = QPushButton(f"เรียกคิว")
+            button1 = QPushButton(self)
             button1.setAccessibleName(str(row))
             button1.clicked.connect(partial(self.btn1_click, row))
             button1.setFlat(True)
             button1.setStyleSheet("border: 1px solid red;border-radius:5px;font-size:18px")
-            self.table.setCellWidget(row, 2, button1)
+            button1.setIcon(QIcon('icon/sound.png'))
+            button1.setIconSize(QSize(32, 32))
+            self.table.setCellWidget(row, 3, button1)
 
-            button2 = QPushButton("จบคิว")
+            button2 = QPushButton(self)
             button2.setAccessibleName(f"{row}")
             button2.clicked.connect(self.btn2_click)
             button2.setFlat(True)
             button2.setStyleSheet("border: 1px solid yellow;border-radius:5px;font-size:18px")
-            self.table.setCellWidget(row, 3, button2)
+            button2.setIcon(QIcon('icon/walking.png'))
+            button2.setIconSize(QSize(48, 42))
+            self.table.setCellWidget(row, 4, button2)
 
         # Create a layout and add the table
         layout = QVBoxLayout()
         layout.addWidget(self.table)
         self.setLayout(layout)
-        self.resize(660, 540)
+        self.resize(800, 540)
 
     def btn1_click(self, data):
         btn = self.sender()
@@ -74,7 +79,7 @@ class Window(QWidget):
         hn = btn.accessibleName()
         p = btn.mapToGlobal(QPoint(0, btn.height() - 5))
         menu = QMenu()
-        menu.setStyleSheet("font-size:16px")
+        menu.setStyleSheet("font-size:18px")
 
         action1 = menu.addAction("กลับบ้าน")
         menu.addSeparator()
