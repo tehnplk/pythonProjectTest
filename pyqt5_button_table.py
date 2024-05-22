@@ -45,11 +45,15 @@ class Window(QWidget):
             button1 = QPushButton(f"เรียกคิว")
             button1.setAccessibleName(str(row))
             button1.clicked.connect(partial(self.btn1_click, row))
+            button1.setFlat(True)
+            button1.setStyleSheet("border: 1px solid red;border-radius:5px;")
             self.table.setCellWidget(row, 2, button1)
 
             button2 = QPushButton("จบคิว")
             button2.setAccessibleName(f"{row}")
             button2.clicked.connect(self.btn2_click)
+            button2.setFlat(True)
+            button2.setStyleSheet("border: 1px solid yellow;border-radius:5px;")
             self.table.setCellWidget(row, 3, button2)
 
         # Create a layout and add the table
