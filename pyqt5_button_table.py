@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import (QApplication, QTableWidget
 , QTableWidgetItem, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QLineEdit, QLabel, QDialog, QMenu)
 from functools import partial
 from customClass import dbclickButton as dbBtn
+from PyQt5 import Qt
 
 
 class Window(QWidget):
@@ -13,24 +14,24 @@ class Window(QWidget):
         self.setWindowTitle("PyQt5 Table with Buttons")
 
         # Create a QTableWidget
-        self.table = QTableWidget(self)
-        self.table.setRowCount(3)
-        self.table.setColumnCount(4)
+        self.table = QTableWidget(3, 4)
+        self.table.setHorizontalHeaderLabels(["Name", "Queue", "", "Action"])
+        self.table.cellDoubleClicked.connect(self.cell_db_click)
 
         # Add buttons to each row
         for row in range(self.table.rowCount()):
-            text = dbBtn.DoubleClickButton(f"ผู้รับบริการรายที่ {row}")
-            text.signalDoubleClicked.connect(partial(print, row))
-            text.setStyleSheet("border:none")
-
             widget = QWidget()
             lay = QHBoxLayout()
+            self.table.setRowHeight(row, 60)
+
+            text = QLabel(f"ผู้รับบริการรายที่ {row}")
+            text.setStyleSheet("border:none")
+            text.setAccessibleName(f"HN {row}")
             lay.addWidget(text)
-            lay.addStretch(10)
-            b = QPushButton("...")
-            lay.addWidget(b)
+
             widget.setLayout(lay)
-            self.table.setCellWidget(row, 0, widget)
+            widget.setAccessibleName(str(row))
+            self.table.setCellWidget(row, 0, text)
 
             button1 = QPushButton(f"เรียกคิว")
             button1.setAccessibleName(str(row))
@@ -38,7 +39,7 @@ class Window(QWidget):
             self.table.setCellWidget(row, 2, button1)
 
             button2 = QPushButton("จบคิว")
-            button2.setAccessibleName(str(row))
+            button2.setAccessibleName(f"HN {row}")
             button2.clicked.connect(partial(self.btn2_click), row)
             self.table.setCellWidget(row, 3, button2)
 
@@ -62,6 +63,12 @@ class Window(QWidget):
         r = menu.exec(p)
         if r == action1:
             print("กลับบ้าน")
+
+    def cell_db_click(self, row, column):
+        if column != 0:
+            return False
+        item = self.table.cellWidget(row, column)
+        print(item.accessibleName())
 
 
 if __name__ == "__main__":
