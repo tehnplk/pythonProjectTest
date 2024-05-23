@@ -7,3 +7,14 @@
 2024-05-23 14:53:05.518428, <class 'AttributeError'> 'Window' object has no attribute 'q_prefix' <traceback object at 0x000001E5B10554C0>
 2024-05-23 14:53:20.474877, <class 'AttributeError'> 'Window' object has no attribute 'sio' <traceback object at 0x000001E5B1059340>
 2024-05-23 14:55:42.298103, <class 'AttributeError'> 'Window' object has no attribute 'sio' <traceback object at 0x000002AA255F6BC0>
+2024-05-23 19:43:00.069990, <class 'socketio.exceptions.BadNamespaceError'> / is not a connected namespace. <traceback object at 0x0000021EC754DF40>
+2024-05-23 19:43:05.109439, <class 'socketio.exceptions.BadNamespaceError'> / is not a connected namespace. <traceback object at 0x0000021EC6457440>
+2024-05-23 19:43:11.648132, <class 'socketio.exceptions.BadNamespaceError'> / is not a connected namespace. <traceback object at 0x0000021EC754DFC0>
+2024-05-23 20:23:34.751038, <class 'socketio.exceptions.BadNamespaceError'> / is not a connected namespace. <traceback object at 0x0000027A16B929C0>
+2024-05-23 20:23:40.646164, <class 'socketio.exceptions.BadNamespaceError'> / is not a connected namespace. <traceback object at 0x0000027A16B92A40>
+2024-05-23 20:26:50.292424, <class 'socketio.exceptions.BadNamespaceError'> / is not a connected namespace. <traceback object at 0x00000276A18E2A00>
+2024-05-23 20:27:46.345662, <class 'socketio.exceptions.BadNamespaceError'> / is not a connected namespace. <traceback object at 0x0000029737DF2A80>
+2024-05-23 20:32:52.979119, <class 'socketio.exceptions.BadNamespaceError'> / is not a connected namespace. <traceback object at 0x000002904AC72940>
+2024-05-23 20:36:32.019431, <class 'socketio.exceptions.BadNamespaceError'> / is not a connected namespace. <traceback object at 0x000001852A762B00>
+2024-05-23 20:36:41.135874, <class 'socketio.exceptions.BadNamespaceError'> / is not a connected namespace. <traceback object at 0x000001F8E0792A00>
+2024-05-23 20:48:44.110578, <class 'socketio.exceptions.BadNamespaceError'> / is not a connected namespace. <traceback object at 0x000001FE17DEDE00>

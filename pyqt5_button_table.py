@@ -25,7 +25,7 @@ class Window(QWidget):
         super().__init__()
         self.setWindowTitle("PyQt5 Table with Buttons")
 
-        self.q_socket_io_server = f"http://localhost:3000"
+        self.q_socket_io_server = f"http://192.168.1.184:3000"
         self.io_client = socketio.Client()
         self.q_signal = "sc"
         self.q_channel = "1"
