@@ -24,9 +24,19 @@ class Window(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("PyQt5 Table with Buttons")
-        self.sio = socketio.Client()
-        self.queue_signal_server = "http://192.168.199.34:3000"
-        self.q_prefix = "A"
+
+        self.q_socket_io_server = f"http://localhost:3000"
+        self.io_client = socketio.Client()
+        self.q_signal = "sc"
+        self.q_channel = "1"
+        try:
+            self.io_client.connect(self.q_socket_io_server)
+            self.io_client.on(f"{self.q_signal}{self.q_channel}", lambda d: print(f"{self.q_signal}{self.q_channel} {d}"))
+        except:
+            pass
+
+        # self.setupSocketIO()
+
         # Create a QTableWidget
         self.table = QTableWidget(20, 5)
         self.table.setHorizontalHeaderLabels(["Name", "Queue", "Appoint", "Call", "Action"])
@@ -54,8 +64,6 @@ class Window(QWidget):
         layout.setContentsMargins(10, 10, 10, 10)
         self.setLayout(layout)
         self.resize(800, 540)
-
-        self.setupSocketIO()
 
     def populate_data(self):
         for row in range(self.table.rowCount()):
@@ -99,11 +107,13 @@ class Window(QWidget):
         n = len(q)
         q = f"000{q}"
         q = q[n:]
-        q = f"{self.q_prefix}{q}"
+        q = f"A{q}"
         QTimer.singleShot(2000, lambda: btn.setEnabled(True))
+        self.io_client.emit('sc1', q)
         try:
-            r = requests.get(f"{self.queue_signal_server}/sc1/{q}")
-            print('signal resp', r.json())
+            pass
+            # r = requests.get(f"{self.q_socket_io_server}/{self.q_signal}{self.q_channel}/{q}")
+            # print('server io resp', r.json())
         except Exception as e:
             print("err", e)
 
@@ -137,22 +147,17 @@ class Window(QWidget):
 
     def setupSocketIO(self):
 
-        @self.sio.event
+        @self.io_client.event
         def connect():
             print("Connected to server")
 
-        @self.sio.event
+        @self.io_client.event
         def disconnect():
             print("Disconnected from server")
 
-        @self.sio.event
+        @self.io_client.event
         def message(data):
             print(f"Message from server: {data}")
-
-        try:
-            self.sio.connect('http://localhost:3000')
-        except:
-            pass
 
     def send_message(self):
         message = self.input_line.text()
@@ -161,7 +166,7 @@ class Window(QWidget):
         self.input_line.clear()
 
     def closeEvent(self, event):
-        self.sio.disconnect()
+        # self.sio.disconnect()
         super().closeEvent(event)
 
 

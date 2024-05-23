@@ -1,3 +1,9 @@
 2024-05-17 11:34:10.898333, <class 'AttributeError'> module 'win32api' has no attribute 'GetDefaultPrinter' <traceback object at 0x0000017706A5D3C0>
 2024-05-23 10:21:00.385461, <class 'TypeError'> object of type 'int' has no len() <traceback object at 0x000002019AA29880>
 2024-05-23 10:26:25.647610, <class 'UnboundLocalError'> local variable 'r' referenced before assignment <traceback object at 0x000001C7E270B900>
+2024-05-23 14:49:14.438461, <class 'AttributeError'> 'Window' object has no attribute 'q_prefix' <traceback object at 0x000001E5B1055440>
+2024-05-23 14:52:58.215765, <class 'AttributeError'> 'Window' object has no attribute 'q_prefix' <traceback object at 0x000001E5B10554C0>
+2024-05-23 14:53:04.375507, <class 'AttributeError'> 'Window' object has no attribute 'q_prefix' <traceback object at 0x000001E5B1055440>
+2024-05-23 14:53:05.518428, <class 'AttributeError'> 'Window' object has no attribute 'q_prefix' <traceback object at 0x000001E5B10554C0>
+2024-05-23 14:53:20.474877, <class 'AttributeError'> 'Window' object has no attribute 'sio' <traceback object at 0x000001E5B1059340>
+2024-05-23 14:55:42.298103, <class 'AttributeError'> 'Window' object has no attribute 'sio' <traceback object at 0x000002AA255F6BC0>
