@@ -1,1 +1,3 @@
 2024-05-17 11:34:10.898333, <class 'AttributeError'> module 'win32api' has no attribute 'GetDefaultPrinter' <traceback object at 0x0000017706A5D3C0>
+2024-05-23 10:21:00.385461, <class 'TypeError'> object of type 'int' has no len() <traceback object at 0x000002019AA29880>
+2024-05-23 10:26:25.647610, <class 'UnboundLocalError'> local variable 'r' referenced before assignment <traceback object at 0x000001C7E270B900>

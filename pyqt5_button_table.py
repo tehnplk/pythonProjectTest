@@ -7,13 +7,26 @@ from PyQt5.QtWidgets import (QApplication, QTableWidget
 from functools import partial
 from customClass import dbclickButton as dbBtn
 from PyQt5 import Qt
+import socketio
+
+import requests
+from datetime import datetime
+
+
+def my_excepthook(type, value, tback):
+    print(type, value, tback)
+    with open('authen_plus_log_err.txt', 'a+') as f:
+        f.write(f"{str(datetime.now())}, {str(type)} {str(value)} {str(tback)}\r\n")
+    sys.__excepthook__(type, value, tback)
 
 
 class Window(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("PyQt5 Table with Buttons")
-
+        self.sio = socketio.Client()
+        self.queue_signal_server = "http://192.168.199.34:3000"
+        self.q_prefix = "A"
         # Create a QTableWidget
         self.table = QTableWidget(20, 5)
         self.table.setHorizontalHeaderLabels(["Name", "Queue", "Appoint", "Call", "Action"])
@@ -41,6 +54,8 @@ class Window(QWidget):
         layout.setContentsMargins(10, 10, 10, 10)
         self.setLayout(layout)
         self.resize(800, 540)
+
+        self.setupSocketIO()
 
     def populate_data(self):
         for row in range(self.table.rowCount()):
@@ -77,12 +92,20 @@ class Window(QWidget):
             button2.setIconSize(QSize(48, 42))
             self.table.setCellWidget(row, 4, button2)
 
-    def btn1_click(self, data):
+    def btn1_click(self, q):
         btn = self.sender()
         btn.setEnabled(False)
-        print(data)
-        # Perform time-consuming operation here
+        q = str(q)
+        n = len(q)
+        q = f"000{q}"
+        q = q[n:]
+        q = f"{self.q_prefix}{q}"
         QTimer.singleShot(2000, lambda: btn.setEnabled(True))
+        try:
+            r = requests.get(f"{self.queue_signal_server}/sc1/{q}")
+            print('signal resp', r.json())
+        except Exception as e:
+            print("err", e)
 
     def btn2_click(self, data):
         btn = self.sender()
@@ -112,9 +135,39 @@ class Window(QWidget):
     def header_click(self, index):
         print(index)
 
+    def setupSocketIO(self):
+
+        @self.sio.event
+        def connect():
+            print("Connected to server")
+
+        @self.sio.event
+        def disconnect():
+            print("Disconnected from server")
+
+        @self.sio.event
+        def message(data):
+            print(f"Message from server: {data}")
+
+        try:
+            self.sio.connect('http://localhost:3000')
+        except:
+            pass
+
+    def send_message(self):
+        message = self.input_line.text()
+        self.text_edit.append(f"Sending message: {message}")
+        self.sio.emit('message', message)
+        self.input_line.clear()
+
+    def closeEvent(self, event):
+        self.sio.disconnect()
+        super().closeEvent(event)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = Window()
     window.show()
+    sys.excepthook = my_excepthook
     sys.exit(app.exec_())
