@@ -25,7 +25,7 @@ class Window(QWidget):
         super().__init__()
         self.setWindowTitle("PyQt5 Table with Buttons")
 
-        self.q_socket_io_server = f"http://192.168.1.184:3000"
+        self.q_socket_io_server = f"http://localhost:3000"
         self.io_client = socketio.Client()
         self.q_signal = "sc"
         self.q_channel = "1"
@@ -86,7 +86,10 @@ class Window(QWidget):
             button1.setAccessibleName(str(row))
             button1.clicked.connect(partial(self.btn1_click, row))
             button1.setFlat(True)
-            button1.setStyleSheet("border: 1px solid red;border-radius:5px;font-size:18px")
+            button1.setStyleSheet("""
+                QPushButton{border: 1px solid red;border-radius:5px;font-size:18px;}
+                QPushButton:hover {background-color: orange;}
+            """)
             button1.setIcon(QIcon('icon/sound.png'))
             button1.setIconSize(QSize(32, 32))
             self.table.setCellWidget(row, 3, button1)

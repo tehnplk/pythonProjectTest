@@ -18,3 +18,5 @@
 2024-05-23 20:36:32.019431, <class 'socketio.exceptions.BadNamespaceError'> / is not a connected namespace. <traceback object at 0x000001852A762B00>
 2024-05-23 20:36:41.135874, <class 'socketio.exceptions.BadNamespaceError'> / is not a connected namespace. <traceback object at 0x000001F8E0792A00>
 2024-05-23 20:48:44.110578, <class 'socketio.exceptions.BadNamespaceError'> / is not a connected namespace. <traceback object at 0x000001FE17DEDE00>
+2024-05-24 08:35:44.050696, <class 'socketio.exceptions.BadNamespaceError'> / is not a connected namespace. <traceback object at 0x00000158D353DCC0>
+2024-05-24 08:35:45.455765, <class 'socketio.exceptions.BadNamespaceError'> / is not a connected namespace. <traceback object at 0x00000158D325EEC0>
