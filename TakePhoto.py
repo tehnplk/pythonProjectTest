@@ -19,8 +19,11 @@ class CameraThread(QThread):
     def __init__(self):
         super(CameraThread, self).__init__()
         self.running = True
-        self.cap = cv2.VideoCapture(0)
         print("Cap init")
+
+    def begin(self, cap):
+        self.cap = cap
+        self.start()
 
     def run(self):
         print("Cap run")
@@ -37,7 +40,6 @@ class CameraThread(QThread):
     def stop(self):
         self.running = False
         print('Cap stop')
-
 
 
 class MainWindow(QMainWindow):
@@ -78,24 +80,29 @@ class MainWindow(QMainWindow):
         # Create the camera thread and connect the signal
         self.camera_thread = CameraThread()
         self.camera_thread.change_pixmap.connect(self.set_vdo)
-        self.camera_thread.start()
+        self.camera_thread.begin(self.cap)
 
     def stop_thread_vdo(self):
         self.camera_thread.stop()
+        self.cap.release()
         QTimer.singleShot(5000, self.start_thread_vdo)
 
     def start_thread_vdo(self):
-        self.camera_thread.start()
+        self.cap = cv2.VideoCapture(0)
+        self.camera_thread.begin(self.cap)
 
     def set_vdo(self, image):
         self.clip = QPixmap.fromImage(image)
         self.label_vdo.setPixmap(self.clip)
 
     def take_photo(self):
+        # method 1
         print(self.clip)
         img = self.clip.toImage()
-        img.save("./temp/a.png","PNG")
+        img.save("./temp/a.png", "PNG")
         return 0
+
+        # method 2
         if not self.cap.isOpened():
             self.cap = cv2.VideoCapture(0)
         ret, frame = self.cap.read()
@@ -107,6 +114,7 @@ class MainWindow(QMainWindow):
 
         return 0
 
+        # method 3
         ret, frame = self.cap.read()
         if ret:
             """height, width, channel = frame.shape
