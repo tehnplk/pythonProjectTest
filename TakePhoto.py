@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPu
 from PyQt5.QtGui import QImage, QPixmap
 import cv2
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal, QThread
+import time
 
 
 def excepthook(exctype, value, traceback):
@@ -17,21 +18,28 @@ class CameraThread(QThread):
 
     def __init__(self):
         super(CameraThread, self).__init__()
+        self.running = True
         self.cap = cv2.VideoCapture(0)
+        print("Cap init")
 
     def run(self):
-        while True:
+        print("Cap run")
+        while self.running:
             ret, frame = self.cap.read()
             if ret:
                 rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 h, w, ch = rgb_frame.shape
                 img = QImage(rgb_frame.data, w, h, ch * w, QImage.Format_RGB888)
                 self.change_pixmap.emit(img)
+                time.sleep(0.01)
 
+    def stop(self):
+        self.running = False
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.cap = cv2.VideoCapture(0)
         self.setWindowTitle("Webcam Photo Taker")
         self.setGeometry(400, 300, 400, 300)
 
@@ -40,52 +48,54 @@ class MainWindow(QMainWindow):
 
         self.layout = QVBoxLayout(self.central_widget)
 
-        self.button = QPushButton("Take Photo", self)
-        self.layout.addWidget(self.button)
-        self.button.clicked.connect(self.take_photo)
+        self.btn_start_vdo = QPushButton("Start Video", self)
+        self.layout.addWidget(self.btn_start_vdo)
+        self.btn_start_vdo.clicked.connect(self.start_thread_vdo)
 
-        self.button3 = QPushButton("Video", self)
-        self.layout.addWidget(self.button3)
-        self.button3.clicked.connect(self.thread_vdo)
+        self.btn_stop_vdo = QPushButton("Stop Video", self)
+        self.layout.addWidget(self.btn_stop_vdo)
+        self.btn_stop_vdo.clicked.connect(self.stop_thread_vdo)
 
-        self.button2 = QPushButton("Clear", self)
-        self.button2.clicked.connect(self.clear_photo)
-        self.layout.addWidget(self.button2)
+        self.btn_photo = QPushButton("Take Photo", self)
+        self.layout.addWidget(self.btn_photo)
+        self.btn_photo.clicked.connect(self.take_photo)
 
-        self.label = QLabel("กดปุ่มเพื่อถ่ายรูป")
-        self.layout.addWidget(self.label)
+        self.btn_clear = QPushButton("Clear", self)
+        self.layout.addWidget(self.btn_clear)
 
-        self.video_label = QLabel("วิดิโอ")
-        self.layout.addWidget(self.video_label)
+        self.label_vdo = QLabel("วิดิโอ")
+        self.layout.addWidget(self.label_vdo)
+
+        self.label_photo = QLabel("กดปุ่มเพื่อถ่ายรูป")
+        self.layout.addWidget(self.label_photo)
 
         # Create the camera thread and connect the signal
         self.camera_thread = CameraThread()
-        self.camera_thread.change_pixmap.connect(self.set_image)
-        # self.camera_thread.start()
-
-    def thread_vdo(self):
+        self.camera_thread.change_pixmap.connect(self.set_vdo)
         self.camera_thread.start()
 
-    def set_image(self, image):
-        self.video_label.setPixmap(QPixmap.fromImage(image))
+    def stop_thread_vdo(self):
+        self.camera_thread.stop()
 
-    def clear_photo(self):
-        self.label.clear()
-        self.label.setText("wait...")
+    def start_thread_vdo(self):
+        self.camera_thread.start()
 
-    def take_photo(self):
-        self.label.clear()
-        ret , frame = cv2.VideoCapture(0).read()
+    def set_vdo(self, image):
+        self.label_vdo.setPixmap(QPixmap.fromImage(image))
+
+    def take_photo(self, cap):
+        if not self.cap.isOpened():
+            self.cap = cv2.VideoCapture(0)
+        ret, frame = self.cap.read()
         cv2.imwrite("./temp/temp.jpg", frame)
 
         pixmap = QPixmap("./temp/temp.jpg")
-        self.label.setPixmap(pixmap)
+        self.label_photo.setPixmap(pixmap)
+        # self.cap.release()
 
         return 0
 
-        self.label.setText("wait...")
-        cap = cv2.VideoCapture(0)
-        ret, frame = cap.read()
+        ret, frame = self.cap.read()
         if ret:
             """height, width, channel = frame.shape
             bytes_per_line = 3 * width
@@ -96,7 +106,7 @@ class MainWindow(QMainWindow):
             h, w, ch = frame.shape
             image = QImage(frame.data, w, h, ch * w, QImage.Format_RGB888)
             pixmap = QPixmap.fromImage(image)
-            self.label.setPixmap(pixmap)
+            self.label_photo.setPixmap(pixmap)
             cap.release()
 
 
