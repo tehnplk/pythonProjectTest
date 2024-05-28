@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QLabel
+from PyQt5.QtWidgets import QDialog, QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QLabel
 from PyQt5.QtGui import QImage, QPixmap
 import cv2
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal, QThread
@@ -24,6 +24,7 @@ class CameraThread(QThread):
 
     def run(self):
         print("Cap run")
+        self.running = True
         while self.running:
             ret, frame = self.cap.read()
             if ret:
@@ -35,6 +36,9 @@ class CameraThread(QThread):
 
     def stop(self):
         self.running = False
+        print('Cap stop')
+
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -42,6 +46,8 @@ class MainWindow(QMainWindow):
         self.cap = cv2.VideoCapture(0)
         self.setWindowTitle("Webcam Photo Taker")
         self.setGeometry(400, 300, 400, 300)
+
+        self.clip = None
 
         self.central_widget = QWidget(self)
         self.setCentralWidget(self.central_widget)
@@ -76,14 +82,20 @@ class MainWindow(QMainWindow):
 
     def stop_thread_vdo(self):
         self.camera_thread.stop()
+        QTimer.singleShot(5000, self.start_thread_vdo)
 
     def start_thread_vdo(self):
         self.camera_thread.start()
 
     def set_vdo(self, image):
-        self.label_vdo.setPixmap(QPixmap.fromImage(image))
+        self.clip = QPixmap.fromImage(image)
+        self.label_vdo.setPixmap(self.clip)
 
-    def take_photo(self, cap):
+    def take_photo(self):
+        print(self.clip)
+        img = self.clip.toImage()
+        img.save("./temp/a.png","PNG")
+        return 0
         if not self.cap.isOpened():
             self.cap = cv2.VideoCapture(0)
         ret, frame = self.cap.read()
