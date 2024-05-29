@@ -21,15 +21,12 @@ class CameraThread(QThread):
         self.running = True
         print("Cap init")
 
-    def begin(self, cap):
-        self.cap = cap
-        self.start()
-
     def run(self):
         print("Cap run")
+        cap = cv2.VideoCapture(0)
         self.running = True
         while self.running:
-            ret, frame = self.cap.read()
+            ret, frame = cap.read()
             if ret:
                 rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 h, w, ch = rgb_frame.shape
@@ -45,7 +42,7 @@ class CameraThread(QThread):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.cap = cv2.VideoCapture(0)
+
         self.setWindowTitle("Webcam Photo Taker")
         self.setGeometry(400, 300, 400, 300)
 
@@ -80,16 +77,14 @@ class MainWindow(QMainWindow):
         # Create the camera thread and connect the signal
         self.camera_thread = CameraThread()
         self.camera_thread.change_pixmap.connect(self.set_vdo)
-        self.camera_thread.begin(self.cap)
+        self.camera_thread.start()
 
     def stop_thread_vdo(self):
         self.camera_thread.stop()
-        self.cap.release()
         QTimer.singleShot(5000, self.start_thread_vdo)
 
     def start_thread_vdo(self):
-        self.cap = cv2.VideoCapture(0)
-        self.camera_thread.begin(self.cap)
+        self.camera_thread.start()
 
     def set_vdo(self, image):
         self.clip = QPixmap.fromImage(image)
