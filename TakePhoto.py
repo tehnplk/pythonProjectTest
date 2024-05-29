@@ -32,7 +32,7 @@ class CameraThread(QThread):
                 h, w, ch = rgb_frame.shape
                 img = QImage(rgb_frame.data, w, h, ch * w, QImage.Format_RGB888)
                 self.change_pixmap.emit(img)
-                time.sleep(0.01)
+                time.sleep(0.001)
 
     def stop(self):
         self.running = False
@@ -81,20 +81,26 @@ class MainWindow(QMainWindow):
 
     def stop_thread_vdo(self):
         self.camera_thread.stop()
-        QTimer.singleShot(5000, self.start_thread_vdo)
 
     def start_thread_vdo(self):
         self.camera_thread.start()
 
     def set_vdo(self, image):
-        self.clip = QPixmap.fromImage(image)
-        self.label_vdo.setPixmap(self.clip)
+        pixmap = QPixmap.fromImage(image)
+        pixmap = pixmap.scaled(380, 280)
+        self.clip = pixmap
+        self.label_vdo.setPixmap(pixmap)
 
     def take_photo(self):
         # method 1
-        print(self.clip)
+        # self.camera_thread.stop()
         img = self.clip.toImage()
         img.save("./temp/a.png", "PNG")
+        pixmap = QPixmap("./temp/a.png")
+        pixmap = pixmap.scaled(380, 280)
+        self.label_photo.setPixmap(pixmap)
+        self.camera_thread.stop()
+        QTimer.singleShot(500, self.start_thread_vdo)
         return 0
 
         # method 2
