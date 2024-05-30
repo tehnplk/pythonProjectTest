@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QPushButton
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import QTimer
-from  datetime import datetime
+from datetime import datetime
 import cv2
 import sys
 
@@ -37,7 +37,8 @@ class MainWindow(QMainWindow):
         if self.start:
             self.cap.release()
             self.timer.stop()
-            self.pixmap.save(f"./temp/bbb.png")
+            timestamp = int(round(datetime.now().timestamp()))
+            self.pixmap.save(f"./temp/{timestamp}.png")
             self.start = False
         else:
             self.cap = cv2.VideoCapture(0)
