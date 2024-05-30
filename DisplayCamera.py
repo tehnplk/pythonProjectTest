@@ -9,7 +9,7 @@ import sys
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        self.start = True
+        self.is_start = True
         self.pixmap = None
 
         self.cap = cv2.VideoCapture(0)
@@ -20,7 +20,7 @@ class MainWindow(QMainWindow):
         self.label = QLabel("Cam")
         self.layout.addWidget(self.label)
 
-        self.btn_stop_start = QPushButton("Stop Start")
+        self.btn_stop_start = QPushButton("Stop")
         self.layout.addWidget(self.btn_stop_start)
         self.btn_stop_start.clicked.connect(self.stop_start)
 
@@ -30,20 +30,22 @@ class MainWindow(QMainWindow):
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_frame)
-        if self.start:
+        if self.is_start:
             self.timer.start(1)
 
     def stop_start(self):
-        if self.start:
+        self.is_start = not self.is_start
+        if not self.is_start:
+            self.btn_stop_start.setText("Start")
             self.cap.release()
             self.timer.stop()
             timestamp = int(round(datetime.now().timestamp()))
             self.pixmap.save(f"./temp/{timestamp}.png")
-            self.start = False
+
         else:
+            self.btn_stop_start.setText("Stop")
             self.cap = cv2.VideoCapture(0)
             self.timer.start()
-            self.start = True
 
     def update_frame(self):
         ret, frame = self.cap.read()
