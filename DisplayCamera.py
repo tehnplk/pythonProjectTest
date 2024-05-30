@@ -8,7 +8,7 @@ import sys
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        self.start = False
+        self.start = True
 
         self.cap = cv2.VideoCapture(0)
         self.setWindowTitle("Hello")
@@ -38,11 +38,10 @@ class MainWindow(QMainWindow):
             self.start = False
         else:
             self.cap = cv2.VideoCapture(0)
-            self.timer.start(30)
+            self.timer.start()
             self.start = True
 
     def update_frame(self):
-        print('update')
         ret, frame = self.cap.read()
         if ret:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
