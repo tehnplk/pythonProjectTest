@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QPushButton
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import QTimer
+from  datetime import datetime
 import cv2
 import sys
 
@@ -9,6 +10,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.start = True
+        self.pixmap = None
 
         self.cap = cv2.VideoCapture(0)
         self.setWindowTitle("Hello")
@@ -35,6 +37,7 @@ class MainWindow(QMainWindow):
         if self.start:
             self.cap.release()
             self.timer.stop()
+            self.pixmap.save(f"./temp/bbb.png")
             self.start = False
         else:
             self.cap = cv2.VideoCapture(0)
@@ -46,8 +49,8 @@ class MainWindow(QMainWindow):
         if ret:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             img = QImage(frame, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
-            pixmap = QPixmap.fromImage(img)
-            self.label.setPixmap(pixmap)
+            self.pixmap = QPixmap.fromImage(img)
+            self.label.setPixmap(self.pixmap)
 
 
 def catch_exceptions(t, val, tb):
