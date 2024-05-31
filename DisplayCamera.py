@@ -11,9 +11,10 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.is_start = True
         self.pixmap = None
+        self.cam_no = 1
 
-        #self.cap = cv2.VideoCapture(1)
-        self.cap = cv2.VideoCapture(1 + cv2.CAP_DSHOW)
+        # self.cap = cv2.VideoCapture(1)
+        self.cap = cv2.VideoCapture(self.cam_no + cv2.CAP_DSHOW)
         """self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 600)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         self.cap.set(cv2.CAP_PROP_FPS, 30)
@@ -49,7 +50,7 @@ class MainWindow(QMainWindow):
 
         else:
             self.btn_stop_start.setText("Stop")
-            self.cap = cv2.VideoCapture(1 + cv2.CAP_DSHOW)
+            self.cap = cv2.VideoCapture(self.cam_no + cv2.CAP_DSHOW)
             self.timer.start()
 
     def update_frame(self):
