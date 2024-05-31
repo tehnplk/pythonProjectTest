@@ -12,7 +12,12 @@ class MainWindow(QMainWindow):
         self.is_start = True
         self.pixmap = None
 
-        self.cap = cv2.VideoCapture(0)
+        #self.cap = cv2.VideoCapture(1)
+        self.cap = cv2.VideoCapture(1 + cv2.CAP_DSHOW)
+        """self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 600)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+        self.cap.set(cv2.CAP_PROP_FPS, 30)
+        self.cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))"""
         self.setWindowTitle("Hello")
         self.resize(500, 350)
         self.layout = QVBoxLayout(self)
@@ -44,7 +49,7 @@ class MainWindow(QMainWindow):
 
         else:
             self.btn_stop_start.setText("Stop")
-            self.cap = cv2.VideoCapture(0)
+            self.cap = cv2.VideoCapture(1 + cv2.CAP_DSHOW)
             self.timer.start()
 
     def update_frame(self):
