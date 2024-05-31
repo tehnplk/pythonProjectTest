@@ -15,10 +15,10 @@ class MainWindow(QMainWindow):
 
         # self.cap = cv2.VideoCapture(1)
         self.cap = cv2.VideoCapture(self.cam_no + cv2.CAP_DSHOW)
-        """self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 600)
-        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+        #self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 600)
+        #self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         self.cap.set(cv2.CAP_PROP_FPS, 30)
-        self.cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))"""
+        self.cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
         self.setWindowTitle("Hello")
         self.resize(500, 350)
         self.layout = QVBoxLayout(self)
