@@ -7,6 +7,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Striped Rows Example")
+        self.resize(640,480)
 
         # Create the table view
         self.table = QTableView()
