@@ -3,6 +3,9 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu
 from PyQt5.QtCore import QEvent
 import sys
 
+def my_excepthook(type, value, tback):
+    print(type, value, tback)
+    sys.__excepthook__(type, value, tback)
 
 class MyWindow(QMainWindow):
     def __init__(self):
@@ -36,4 +39,5 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = MyWindow()
     window.show()
+    sys.excepthook = my_excepthook
     sys.exit(app.exec_())

@@ -20,8 +20,8 @@ def print_excel(file_path):
     # Set margins (optional)
     worksheet.PageSetup.TopMargin = excel.Application.CentimetersToPoints(0.5)
     worksheet.PageSetup.BottomMargin = excel.Application.CentimetersToPoints(0.5)
-    worksheet.PageSetup.LeftMargin = excel.Application.CentimetersToPoints(0.5)
-    worksheet.PageSetup.RightMargin = excel.Application.CentimetersToPoints(0.5)
+    worksheet.PageSetup.LeftMargin = excel.Application.CentimetersToPoints(0)
+    worksheet.PageSetup.RightMargin = excel.Application.CentimetersToPoints(0)
 
     workbook.PrintOut()
     # Close the workbook without saving
